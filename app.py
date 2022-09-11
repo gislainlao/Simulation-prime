@@ -1,6 +1,10 @@
 import streamlit as st
 import datetime
+import pandas as pd
 
+df1 = pd.read_excel("Taux.xlsx",sheet_name="TAUX DE PRIMES UNIQUES")
+
+df2 = pd.read_excel("Taux.xlsx",sheet_name="TAUX DE PRIMES UNIQUES AVEC PE")
 
 datetime.datetime.today()
 datetime.datetime(2018, 2, 13, 22, 25, 0, 693541)
