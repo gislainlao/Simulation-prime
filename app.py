@@ -32,3 +32,34 @@ Mt = st.sidebar.text_input('Montant du Pret')
 Garantie = st.sidebar.selectbox('Garantie',c)
 
 check1 = st.sidebar.button("SIMULATION")
+
+if check1:
+    st.header("**INFORMATION DU CLIENT**")
+    
+    Age= round((datetime.strptime(date, "%d/%m/%Y")-datetime.strptime(dn, "%d/%m/%Y")).days/365,0)
+    st.write("**Age du Client : **{:.0f} ans".format(Age))
+    st.write("**Montant du Pret : ",(Mt))
+    st.write("**Date de D'effet : ",date)
+    from datetime import date, timedelta
+    import locale
+    today = date.today()
+    delta = timedelta(days = int(dure)*365)
+    nextWeek = today + delta
+    locale.setlocale(locale.LC_ALL, locale = "FR_fr")
+    st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
+    st.write("**Garantie Choisie : ",Garantie)
+   
+    st.header("**DETAIL DU CALCULE DE LA PRIME**")
+    if Garantie=='DECES-INVALIDITE TOTALE ET DEFINITIVE':
+        tx=Taux(df1,int(Age),int(dure))
+        st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
+        st.write("**Prime Net avec Frais : **{:.0f} FCFA".format((int(Mt)*tx)+500))
+        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500)*1.03))
+    else:
+        tx=Taux(df2,int(Age),int(dure))
+        st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
+        st.write("**Prime Net avec Frais : **{:.0f} FCFA".format((int(Mt)*tx)+500))
+        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500)*1.03))
+
+st.markdown('***')
+st.markdown("Merci d'avoir parcouru cette application Web !! ❤️")
