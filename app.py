@@ -17,3 +17,18 @@ html_temp = """
 <p style="font-size: 20px; font-weight: bold; text-align:center">Calcul de la prime…</p>
 """
 st.markdown(html_temp, unsafe_allow_html=True)
+#Customer ID selection
+
+st.sidebar.header("**INFORMATION GENERAL**")
+
+dn = st.sidebar.text_input('Date de Naissance')
+#Loading selectbox
+date = st.sidebar.text_input('Date de demande de ret',dj)
+#Montant du pret
+dure = st.sidebar.text_input('Durée du pret en Année')
+
+Mt = st.sidebar.text_input('Montant du Pret')
+
+Garantie = st.sidebar.selectbox('Garantie',c)
+
+check1 = st.sidebar.button("SIMULATION")
