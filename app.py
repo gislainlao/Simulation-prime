@@ -101,11 +101,11 @@ if check1:
     st.write("**Montant du Pret : ",(Mt))
     st.write("**Date de D'effet : ",date)
     from datetime import date, timedelta
-    import locale
+    #import locale
     today = date.today()
     delta = timedelta(days = int(dure)*365)
     nextWeek = today + delta
-    locale.setlocale(locale.LC_ALL, locale = "fr_FR.UTF-8")
+    #locale.setlocale(locale.LC_ALL, locale = "fr_FR.UTF-8")
     st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
     st.write("**Garantie Choisie : ",Garantie)
    
