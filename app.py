@@ -8,6 +8,62 @@ dj= datetime.datetime.today().strftime("%d/%m/%Y")
 
 c=['DECES-INVALIDITE TOTALE ET DEFINITIVE','DECES-INVALIDITE TOTALE ET DEFINITIVE ET PERTE EMPLOI']
 
+def Taux(data, age, dr):
+    c=len(data)
+#for i in range(c):
+    if age >=18 and age <= 24:
+        for i in range(c):
+            if data.iloc[i, 0] == dr:
+                T=data.iloc[i, 1]
+                return T
+    else:
+        if age >=25 and age <= 29:
+             for i in range(c):
+                if data.iloc[i, 0] == dr:
+                    T=data.iloc[i, 2]
+                    return T
+        else:
+            if age >=30 and age <= 34:
+                for i in range(c):
+                    if data.iloc[i, 0] == dr:
+                        T=data.iloc[i, 3]
+                        return T
+            else:
+                if age >=35 and age <= 39:
+                    for i in range(c):
+                        if data.iloc[i, 0] == dr:
+                            T=data.iloc[i, 4] 
+                            return T
+                else:
+                    if age >=40 and age <= 44:
+                        for i in range(c):
+                            if data.iloc[i, 0] == dr:
+                                T=data.iloc[i, 5]
+                                return T
+                    else:
+                        if age >=45 and age <= 49:
+                            for i in range(c):
+                                if data.iloc[i, 0] == dr:
+                                    T=data.iloc[i, 6]
+                                    return T
+                        else:
+                            if age >=50 and age <= 54:
+                                for i in range(c):
+                                    if data.iloc[i, 0] == dr:
+                                        T=data.iloc[i, 7]
+                                        return T
+                            else:
+                                if age >=55 and age <= 59:
+                                    for i in range(c):
+                                        if data.iloc[i, 0] == dr:
+                                            T=data.iloc[i, 8]
+                                            return T
+                                else:
+                                    if age >=60 and age <= 64:
+                                        for i in range(c):
+                                            if data.iloc[i, 0] == dr:
+                                                T=data.iloc[i, 9] 
+                                                return T
 
     #Title display
 html_temp = """
