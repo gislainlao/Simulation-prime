@@ -92,7 +92,7 @@ check1 = st.sidebar.button("SIMULATION")
 if check1:
     st.header("**INFORMATION DU CLIENT**")
     
-    Age= round((datetime.strptime(date, "%d/%m/%Y")-datetime.strptime(dn, "%d/%m/%Y")).days/365,0)
+    Age= round((datetime.datetime.strptime(date, "%d/%m/%Y")-datetime.datetime.strptime(dn, "%d/%m/%Y")).days/365,0)
     st.write("**Age du Client : **{:.0f} ans".format(Age))
     st.write("**Montant du Pret : ",(Mt))
     st.write("**Date de D'effet : ",date)
