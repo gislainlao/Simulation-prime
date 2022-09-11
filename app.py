@@ -100,13 +100,13 @@ if check1:
     st.write("**Age du Client : **{:.0f} ans".format(Age))
     st.write("**Montant du Pret : ",(Mt))
     st.write("**Date de D'effet : ",date)
-    from datetime import date, timedelta
-    import locale
-    today = date.today()
-    delta = timedelta(days = int(dure)*365)
-    nextWeek = today + delta
-    locale.setlocale(locale.LC_ALL, locale = "FR_fr")
-    st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
+    #from datetime import date, timedelta
+    #import locale
+   # today = date.today()
+   # delta = timedelta(days = int(dure)*365)
+    #nextWeek = today + delta
+    #locale.setlocale(locale.LC_ALL, locale = "FR_fr")
+    #st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
     st.write("**Garantie Choisie : ",Garantie)
    
     st.header("**DETAIL DU CALCULE DE LA PRIME**")
