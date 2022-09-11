@@ -105,7 +105,7 @@ if check1:
     today = date.today()
     delta = timedelta(days = int(dure)*365)
     nextWeek = today + delta
-    locale.setlocale(locale.LC_ALL, locale = "FR_fr")
+    locale.setlocale(locale.LC_ALL, locale = "fr_FR.UTF-8")
     st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
     st.write("**Garantie Choisie : ",Garantie)
    
