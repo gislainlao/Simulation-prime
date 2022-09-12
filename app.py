@@ -83,7 +83,7 @@ st.sidebar.header("**INFORMATION GENERAL**")
 
 dn = st.sidebar.text_input('Date de Naissance')
 #Loading selectbox
-date = st.sidebar.text_input('Date de demande de ret',dj)
+date = st.sidebar.text_input('Date de demande de pret',dj)
 #Montant du pret
 dure = st.sidebar.text_input('Durée du pret en Année')
 
