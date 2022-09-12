@@ -91,7 +91,28 @@ Mt = st.sidebar.text_input('Montant du Pret')
 
 Garantie = st.sidebar.selectbox('Garantie',c)
 
-check1 = st.sidebar.button("SIMULATION")
+st.markdown("""<style>
+    
+    div:nth-child(7) > [class^="css-"] > div:nth-child(1) > div > div > div > button {
+        background-color: #DD3300;
+        color:#eeffee;
+        border-radius: 0.75rem;
+        }
+
+    div[id^="bui-"] > button:nth-child(1) {
+    background-color: #33DD00;
+    color: #EEFFFF;
+    }
+    </style>""", unsafe_allow_html=True)
+    
+col1, col2, col3  = st.sidebar.columns(3)
+
+with col1:
+    pass
+with col3:
+    pass
+with col2:
+    check1 = st.button('SUBMIT')
 
 if check1:
     st.header("**INFORMATION DU CLIENT**")
