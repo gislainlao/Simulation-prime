@@ -146,4 +146,4 @@ if check1:
         st.write("**Taxe: **{:.0f} FCFTA".format(ta))
         st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
     st.markdown('***')
-    st.markdown("Merci d'avoir parcouru cette application Web !! ❤️")
+    st.markdown("Merci d'avoir parcouru cette application Web !! si vous voulez me contacter, vous pouvez me trouver sur [Linkedin] (https://www.linkedin.com/in/essohanam-laokpezi)* ❤️")
