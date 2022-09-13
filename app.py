@@ -72,7 +72,7 @@ def Taux(data, age, dr):
     #Title display
 html_temp = """
 <div style="background-color: tomato; padding:10px; border-radius:10px">
-<h1 style="color: white; text-align:center">PLATEFORM DE SIMULATION DE CREDIT</h1>
+<h1 style="color: white; text-align:center">PLATEFORM DE SIMULATION DE PRIME D'ASSURANCE</h1>
 </div>
 <p style="font-size: 20px; font-weight: bold; text-align:center">Calcul de la prime…</p>
 """
@@ -134,13 +134,16 @@ if check1:
     if Garantie=='DECES-INVALIDITE TOTALE ET DEFINITIVE':
         tx=Taux(df1,int(Age),int(dure))
         st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Prime Net avec Frais : **{:.0f} FCFA".format((int(Mt)*tx)+500))
-        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500)*1.03))
+        st.write("**Cout de police: **{:.0f} FCFA".format(500))
+        ta=((int(Mt)*tx)+500)*0.03
+        st.write("**Taxe: **{:.0f} FCFTA".format(ta))
+        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
     else:
         tx=Taux(df2,int(Age),int(dure))
         st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Prime Net avec Frais : **{:.0f} FCFA".format((int(Mt)*tx)+500))
-        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500)*1.03))
-
-st.markdown('***')
-st.markdown("Merci d'avoir parcouru cette application Web !! ❤️")
+        st.write("**Cout de police: **{:.0f} FCFA".format(500))
+        ta=((int(Mt)*tx)+500)*0.03
+        st.write("**Taxe: **{:.0f} FCFTA".format(ta))
+        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
+    st.markdown('***')
+    st.markdown("Merci d'avoir parcouru cette application Web !! ❤️")
