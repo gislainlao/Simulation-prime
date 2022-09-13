@@ -79,7 +79,7 @@ html_temp = """
 st.markdown(html_temp, unsafe_allow_html=True)
 #Customer ID selection
 
-st.sidebar.header("**INFORMATION GENERAL**")
+st.sidebar.header("**INFORMATION GENERALE**")
 
 dn = st.sidebar.text_input('Date de Naissance (dd/mm/aaaa)')
 #Loading selectbox
