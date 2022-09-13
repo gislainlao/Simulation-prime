@@ -72,7 +72,7 @@ def Taux(data, age, dr):
     #Title display
 html_temp = """
 <div style="background-color: tomato; padding:10px; border-radius:10px">
-<h1 style="color: white; text-align:center">PLATEFORM DE SIMULATION DE PRIME D'ASSURANCE</h1>
+<h1 style="color: white; text-align:center">PLATEFORME DE SIMULATION DE PRIME D'ASSURANCE</h1>
 </div>
 <p style="font-size: 20px; font-weight: bold; text-align:center">Calcul de la prime…</p>
 """
