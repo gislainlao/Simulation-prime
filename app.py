@@ -81,13 +81,13 @@ st.markdown(html_temp, unsafe_allow_html=True)
 
 st.sidebar.header("**INFORMATION GENERAL**")
 
-dn = st.sidebar.text_input('Date de Naissance')
+dn = st.sidebar.text_input('Date de Naissance (dd/mm/aaaa)')
 #Loading selectbox
-date = st.sidebar.text_input('Date de demande de pret',dj)
+date = st.sidebar.text_input('Date de demande de prêt',dj)
 #Montant du pret
-dure = st.sidebar.text_input('Durée du pret en Année')
+dure = st.sidebar.text_input('Durée du prêt en Année')
 
-Mt = st.sidebar.text_input('Montant du Pret')
+Mt = st.sidebar.text_input('Montant du prêt')
 
 Garantie = st.sidebar.selectbox('Garantie',c)
 
@@ -146,4 +146,4 @@ if check1:
         st.write("**Taxe: **{:.0f} FCFTA".format(ta))
         st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
     st.markdown('***')
-    st.markdown("Merci d'avoir parcouru cette application Web !! si vous voulez me contacter, vous pouvez me trouver sur [Linkedin] (https://www.linkedin.com/in/essohanam-laokpezi)* ❤️")
+    st.markdown("Merci d'avoir parcouru cette application Web !! si vous voulez me contacter, vous pouvez me trouver sur [Linkedin] (https://linkedin.com/in/essohanam-laokpezi)* ❤️")
