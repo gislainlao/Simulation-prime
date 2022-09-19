@@ -130,18 +130,18 @@ if check1:
     st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
     st.write("**Garantie Choisie : ",Garantie)
    
-    st.header("**DETAILs DU CALCUL DE LA PRIME**")
+    st.header("**DÉTAILS DU CALCUL DE LA PRIME**")
     if Garantie=='DECES-INVALIDITE TOTALE ET DEFINITIVE':
         tx=Taux(df1,int(Age),int(dure))
         st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Cout de police: **{:.0f} FCFA".format(500))
+        st.write("**Coût de police: **{:.0f} FCFA".format(500))
         ta=((int(Mt)*tx)+500)*0.03
         st.write("**Taxe: **{:.0f} FCFTA".format(ta))
         st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
     else:
         tx=Taux(df2,int(Age),int(dure))
         st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Cout de police: **{:.0f} FCFA".format(500))
+        st.write("**Coût de police: **{:.0f} FCFA".format(500))
         ta=((int(Mt)*tx)+500)*0.03
         st.write("**Taxe: **{:.0f} FCFTA".format(ta))
         st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
