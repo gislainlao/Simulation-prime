@@ -1,151 +1,253 @@
+
 import streamlit as st
 import datetime
 import pandas as pd
 
-df1 = pd.read_excel("Taux.xlsx",sheet_name="TAUX DE PRIMES UNIQUES")
+# --------------------------------------------------
+# CONFIGURATION
+# --------------------------------------------------
 
-df2 = pd.read_excel("Taux.xlsx",sheet_name="TAUX DE PRIMES UNIQUES AVEC PE")
+st.set_page_config(
+    page_title="Simulateur de primes d'assurance",
+    page_icon="📊",
+    layout="wide"
+)
 
-#datetime.datetime.today()
-datetime.datetime(2018, 2, 13, 22, 25, 0, 693541)
-dj= datetime.datetime.today().strftime("%d/%m/%Y")
+# --------------------------------------------------
+# CHARGEMENT DES DONNEES EXCEL
+# --------------------------------------------------
 
-c=['DECES-INVALIDITE TOTALE ET DEFINITIVE','DECES-INVALIDITE TOTALE ET DEFINITIVE ET PERTE EMPLOI']
+@st.cache_data
+def charger_donnees():
+    df1 = pd.read_excel(
+        "Taux.xlsx",
+        sheet_name="TAUX DE PRIMES UNIQUES"
+    )
 
-def Taux(data, age, dr):
-    c=len(data)
-#for i in range(c):
-    if age >=18 and age <= 24:
-        for i in range(c):
-            if data.iloc[i, 0] == dr:
-                T=data.iloc[i, 1]
-                return T
-    else:
-        if age >=25 and age <= 29:
-             for i in range(c):
-                if data.iloc[i, 0] == dr:
-                    T=data.iloc[i, 2]
-                    return T
-        else:
-            if age >=30 and age <= 34:
-                for i in range(c):
-                    if data.iloc[i, 0] == dr:
-                        T=data.iloc[i, 3]
-                        return T
-            else:
-                if age >=35 and age <= 39:
-                    for i in range(c):
-                        if data.iloc[i, 0] == dr:
-                            T=data.iloc[i, 4] 
-                            return T
-                else:
-                    if age >=40 and age <= 44:
-                        for i in range(c):
-                            if data.iloc[i, 0] == dr:
-                                T=data.iloc[i, 5]
-                                return T
-                    else:
-                        if age >=45 and age <= 49:
-                            for i in range(c):
-                                if data.iloc[i, 0] == dr:
-                                    T=data.iloc[i, 6]
-                                    return T
-                        else:
-                            if age >=50 and age <= 54:
-                                for i in range(c):
-                                    if data.iloc[i, 0] == dr:
-                                        T=data.iloc[i, 7]
-                                        return T
-                            else:
-                                if age >=55 and age <= 59:
-                                    for i in range(c):
-                                        if data.iloc[i, 0] == dr:
-                                            T=data.iloc[i, 8]
-                                            return T
-                                else:
-                                    if age >=60 and age <= 64:
-                                        for i in range(c):
-                                            if data.iloc[i, 0] == dr:
-                                                T=data.iloc[i, 9] 
-                                                return T
+    df2 = pd.read_excel(
+        "Taux.xlsx",
+        sheet_name="TAUX DE PRIMES UNIQUES AVEC PE"
+    )
 
-    #Title display
-html_temp = """
-<div style="background-color: tomato; padding:10px; border-radius:10px">
-<h1 style="color: white; text-align:center">PLATEFORME DE SIMULATION DE PRIME D'ASSURANCE</h1>
+    return df1, df2
+
+
+try:
+    df1, df2 = charger_donnees()
+except Exception as e:
+    st.error(f"Erreur lors du chargement du fichier Excel : {e}")
+    st.stop()
+
+
+# --------------------------------------------------
+# PARAMETRES
+# --------------------------------------------------
+
+garanties = [
+    "DECES-INVALIDITE TOTALE ET DEFINITIVE",
+    "DECES-INVALIDITE TOTALE ET DEFINITIVE ET PERTE EMPLOI"
+]
+
+# --------------------------------------------------
+# FONCTION DE CALCUL DU TAUX
+# --------------------------------------------------
+
+def Taux(data, age, duree):
+
+    if age < 18 or age > 64:
+        raise ValueError("L'âge doit être compris entre 18 et 64 ans.")
+
+    if duree < 1 or duree > 9:
+        raise ValueError("Durée non prise en charge.")
+
+    # Détermination de la tranche d'âge
+    tranche = (age - 18) // 5
+
+    # Correspondance avec les colonnes Excel
+    colonne = tranche + 1
+
+    # Recherche du taux correspondant à la durée
+    ligne = data[data.iloc[:, 0] == duree]
+
+    if ligne.empty:
+        raise ValueError(
+            f"Aucun taux trouvé pour une durée de {duree} ans."
+        )
+
+    taux = ligne.iloc[0, colonne]
+
+    if pd.isna(taux):
+        raise ValueError("Le taux correspondant est indisponible.")
+
+    return float(taux)
+
+
+# --------------------------------------------------
+# INTERFACE
+# --------------------------------------------------
+
+st.markdown("""
+<div style="
+    background-color: tomato;
+    padding: 15px;
+    border-radius: 10px;
+">
+<h1 style="color:white; text-align:center;">
+PLATEFORME DE SIMULATION DE PRIME D'ASSURANCE
+</h1>
 </div>
-<p style="font-size: 20px; font-weight: bold; text-align:center">Calcul de la prime…</p>
-"""
-st.markdown(html_temp, unsafe_allow_html=True)
-#Customer ID selection
+""", unsafe_allow_html=True)
 
-st.sidebar.header("**INFORMATION GENERALE**")
+st.markdown(
+    "<p style='text-align:center;font-size:20px;font-weight:bold;'>"
+    "Calcul de la prime d'assurance</p>",
+    unsafe_allow_html=True
+)
 
-dn = st.sidebar.text_input('Date de Naissance (dd/mm/aaaa)')
-#Loading selectbox
-date = st.sidebar.text_input('Date de demande de prêt',dj)
-#Montant du pret
-dure = st.sidebar.text_input('Durée du prêt en Année')
 
-Mt = st.sidebar.text_input('Montant du prêt')
+# --------------------------------------------------
+# FORMULAIRE CLIENT
+# --------------------------------------------------
 
-Garantie = st.sidebar.selectbox('Garantie',c)
+st.sidebar.header("INFORMATIONS GENERALES")
 
-st.markdown("""<style>
-    
-    div:nth-child(7) > [class^="css-"] > div:nth-child(1) > div > div > div > button {
-        background-color: #DD3300;
-        color:#eeffee;
-        border-radius: 0.75rem;
-        }
+with st.sidebar.form("formulaire_simulation"):
 
-    div[id^="bui-"] > button:nth-child(1) {
-    background-color: #33DD00;
-    color: #EEFFFF;
-    }
-    </style>""", unsafe_allow_html=True)
-    
-col1, col2, col3  = st.sidebar.columns(3)
+    date_naissance = st.date_input(
+        "Date de naissance",
+        value=datetime.date(1995, 1, 1),
+        min_value=datetime.date(1900, 1, 1),
+        max_value=datetime.date.today(),
+        format="DD/MM/YYYY"
+    )
 
-with col1:
-    pass
-with col3:
-    pass
-with col2:
-    check1 = st.button('SUBMIT')
+    date_demande = st.date_input(
+        "Date de demande de prêt",
+        value=datetime.date.today(),
+        format="DD/MM/YYYY"
+    )
 
-if check1:
-    st.header("**INFORMATION DU CLIENT**")
-    
-    Age= round((datetime.datetime.strptime(date, "%d/%m/%Y")-datetime.datetime.strptime(dn, "%d/%m/%Y")).days/365,0)
-    st.write("**Age du Client : **{:.0f} ans".format(Age))
-    st.write("**Montant du Pret : ",(Mt))
-    st.write("**Date de D'effet : ",date)
-    from datetime import date, timedelta
-    #import locale
-    today = date.today()
-    delta = timedelta(days = int(dure)*365)
-    nextWeek = today + delta
-    #locale.setlocale(locale.LC_ALL, locale = "fr_FR.UTF-8")
-    st.write("**Date d'échéance : ",nextWeek.strftime("%d/%m/%Y"))
-    st.write("**Garantie Choisie : ",Garantie)
-   
-    st.header("**DÉTAILS DU CALCUL DE LA PRIME**")
-    if Garantie=='DECES-INVALIDITE TOTALE ET DEFINITIVE':
-        tx=Taux(df1,int(Age),int(dure))
-        st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Coût de police: **{:.0f} FCFA".format(500))
-        ta=((int(Mt)*tx)+500)*0.03
-        st.write("**Taxe: **{:.0f} FCFTA".format(ta))
-        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
-    else:
-        tx=Taux(df2,int(Age),int(dure))
-        st.write("**Prime Net a payer : **{:.0f} FCFA".format((int(Mt)*tx)))
-        st.write("**Coût de police: **{:.0f} FCFA".format(500))
-        ta=((int(Mt)*tx)+500)*0.03
-        st.write("**Taxe: **{:.0f} FCFTA".format(ta))
-        st.write("**Prime TTC : **{:.0f} FCFA".format(((int(Mt)*tx)+500+ta)))
-    st.markdown('***')
-    Linkedin="Merci d'avoir parcouru cette application Web !! si vous voulez me contacter, vous pouvez me trouver sur [Linkedin](https://www.linkedin.com/in/essohanam-laokpezi/)* ❤️"
-    st.markdown(Linkedin,unsafe_allow_html=True)
-  
+    duree = st.number_input(
+        "Durée du prêt (en années)",
+        min_value=1,
+        max_value=50,
+        value=10,
+        step=1
+    )
+
+    montant = st.number_input(
+        "Montant du prêt (FCFA)",
+        min_value=1,
+        value=1000000,
+        step=100000
+    )
+
+    garantie = st.selectbox(
+        "Garantie",
+        garanties
+    )
+
+    submit = st.form_submit_button(
+        "SIMULER LA PRIME",
+        use_container_width=True
+    )
+
+
+# --------------------------------------------------
+# CALCUL DE LA SIMULATION
+# --------------------------------------------------
+
+if submit:
+
+    try:
+
+        # Calcul de l'âge exact
+        age = (
+            date_demande.year - date_naissance.year
+            - (
+                (date_demande.month, date_demande.day)
+                < (date_naissance.month, date_naissance.day)
+            )
+        )
+
+        # Date d'échéance
+        date_echeance = (
+            date_demande
+            + datetime.timedelta(days=int(duree * 365.25))
+        )
+
+        # Choix du fichier de taux
+        if garantie == garanties[0]:
+            data = df1
+        else:
+            data = df2
+
+        # Recherche du taux
+        tx = Taux(data, age, int(duree))
+
+        # Calcul des primes
+        prime_nette = montant * tx
+        cout_police = 500
+        taxe = (prime_nette + cout_police) * 0.03
+        prime_ttc = prime_nette + cout_police + taxe
+
+        # --------------------------------------------------
+        # AFFICHAGE DES RESULTATS
+        # --------------------------------------------------
+
+        st.success("Simulation réalisée avec succès !")
+
+        st.header("INFORMATIONS DU CLIENT")
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Âge du client", f"{age} ans")
+        col2.metric("Montant du prêt", f"{montant:,.0f} FCFA")
+        col3.metric("Durée du prêt", f"{int(duree)} ans")
+
+        st.write("**Date d'effet :**", date_demande.strftime("%d/%m/%Y"))
+
+        st.write(
+            "**Date d'échéance :**",
+            date_echeance.strftime("%d/%m/%Y")
+        )
+
+        st.write("**Garantie choisie :**", garantie)
+
+        st.divider()
+
+        st.header("DÉTAILS DU CALCUL DE LA PRIME")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "Prime nette",
+                f"{prime_nette:,.0f} FCFA"
+            )
+
+            st.metric(
+                "Coût de police",
+                f"{cout_police:,.0f} FCFA"
+            )
+
+        with col2:
+            st.metric(
+                "Taxe (3 %)",
+                f"{taxe:,.0f} FCFA"
+            )
+
+            st.metric(
+                "Prime TTC",
+                f"{prime_ttc:,.0f} FCFA"
+            )
+
+        st.markdown("---")
+
+        st.markdown(
+            "Merci d'avoir utilisé cette application ! "
+            "[Me contacter sur LinkedIn](https://www.linkedin.com/in/essohanam-laokpezi/)"
+        )
+
+    except Exception as e:
+        st.error(f"Impossible de réaliser la simulation : {e}")
